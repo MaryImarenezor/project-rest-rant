@@ -1,6 +1,51 @@
+//VARIABLES
 $light-blue: rgb(94, 138, 219);
+$light-light-blue: lightblue;
+
+$link-hover: pink;
+$link-text: white;
+
+
+//STYLING
 
 h1 {
     text-align: center;
     color: $light-blue;
+}
+
+nav {
+    background-color: $light-blue;
+    padding: 10px;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+    }
+
+    li {
+        display: inline;
+        margin-right: 25px;
+    }
+
+    a {
+        color: $link-text;
+        font-size: 1.5em;
+        text-decoration: none;
+
+        &:hover {
+            color: $link-hover;
+            text-decoration: none;
+        }
+    }
+}
+
+body {
+    background-color: $light-light-blue;
+    text-align: center;
+}
+
+main {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: white;
 }
