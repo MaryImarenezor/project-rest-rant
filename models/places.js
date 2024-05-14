@@ -5,7 +5,10 @@ const placeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    pic: String,
+    pic: {
+        type: String,
+        default: 'http://placekitten.com/350/350'
+    },
     cuisines: {
         type: String,
         required: true

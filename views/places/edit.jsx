@@ -5,11 +5,15 @@ function edit_form(data) {
     return (
         <main>
         <h1>Add a new Place</h1>
-        <form method='POST' action={`/places/${data.place.id}?_method=PUT`}>
+        <form method="POST" action={`/places/${data.place.id}?_method=PUT`}>
             <div className='form-group'>
                 <label htmlFor="name">Place Name</label>
                 <input value={data.place.name} className='form-control' name='name' id='name' required />
             </div>
+            <div className='form-group'>
+                        <label htmlFor='founded'>Founded Year</label>
+                        <input className='form-control' id='founded' name='founded' ></input>
+                    </div>
             <div className='form-group'>
                 <label htmlFor="pic">Place Pic</label>
                 <input className='form-control' type='url' name='pic' id='pic' />

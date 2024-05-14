@@ -6,13 +6,13 @@ function new_form() {
         <Def>
             <main>
                 <h1>Add a new Place</h1>
-                <form method='POST' action='/places'>
+                <form method="POST" action="/places">
                     <div className='form-group'>
                         <label htmlFor="name">Place Name</label>
                         <input className='form-control' name='name' id='name' required />
                     </div>
                     <div className='form-group'>
-                        <label for='founded'>Founded Year</label>
+                        <label htmlFor='founded'>Founded Year</label>
                         <input className='form-control' id='founded' name='founded' ></input>
                     </div>
                     <div className='form-group'>

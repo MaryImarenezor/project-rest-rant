@@ -6,6 +6,7 @@ const db = require('../models')
 router.get('/', (req, res) => {
     //res.render('places/index', { places })
     //res.send('GET /places stub')
+    
     db.Place.find()
     .then((places) => {
         res.render('places/index', { places })
@@ -14,6 +15,7 @@ router.get('/', (req, res) => {
         console.log(err)
         res.render('error404')
     })
+    
 })
 
 router.get('/new', (req, res) => {
@@ -45,17 +47,14 @@ router.get('/:id', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    let id = Number(req.params.id)
-    if (isNaN(id)) {
-        res.render('error404')
-    }
-    else if (!places[id]) {
-        res.render('error404')
-    }
-    else {
-        places.splice(id, 1)
-        res.redirect('/places')
-    }
+    db.Place.findByIdAndDelete(req.params.id)
+    .then(() => {
+        res.redirect('/places');
+    })
+    .catch(err => {
+        console.log(err);
+        res.render('error404');
+    });
 })
 
 router.get('/:id/edit', (req, res) => {
@@ -71,7 +70,15 @@ router.get('/:id/edit', (req, res) => {
         res.render('/places/edit', {places: places[id]})
     }
     */
-    res.send('GET edit form stub')
+    //res.send('GET edit form stub')
+    db.Place.findById(req.params.id)
+    .then(place => {
+        res.render('places/edit', { place });
+    })
+    .catch(err => {
+        console.log(err);
+        res.render('error404');
+    });
 })
 
 router.post('/', (req, res) => {
@@ -92,12 +99,14 @@ router.post('/', (req, res) => {
     places.push(req.body)
     res.redirect('/places')
     */
+    console.log(req.body)
+
     db.Place.create(req.body)
     .then(() => {
         res.redirect("/places")
     })
     .catch(err =>{
-        console.log('err', err)
+        console.log('Validation Error: ', err)
         res.render('error404')
     })
 })
@@ -126,7 +135,15 @@ router.put('/:id', (req, res) => {
         res.redirect(`/places/${id}`)
     }
     */
-    res.send('PUT /places/:id stub')
+    //res.send('PUT /places/:id stub')
+    db.Place.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+        res.redirect(`/places/${req.params.id}`);
+    })
+    .catch(err => {
+        console.log(err);
+        res.render('error404');
+    });
 })
 
 
