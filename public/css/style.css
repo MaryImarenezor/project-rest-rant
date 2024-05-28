@@ -3,6 +3,10 @@ h1 {
   color: rgb(94, 138, 219);
 }
 
+h2 {
+  color: lightblue;
+}
+
 nav {
   background-color: rgb(94, 138, 219);
   padding: 10px;
