@@ -38,38 +38,26 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     db.Place.findByIdAndDelete(req.params.id)
-    .then(() => {
-        res.redirect('/places');
+    .then(place => {
+        res.redirect('/places')
     })
     .catch(err => {
-        console.log(err);
-        res.render('error404');
-    });
+        console.log('err', err)
+        res.render('error404')
+    })
 })
 
+
 router.get('/:id/edit', (req, res) => {
-    /*
-    let id = Number(req.params.id)
-    if(isNaN(id)) {
-        res.render('error404')
-    }
-    else if(!places[id]) {
-        res.render('error404')
-    }
-    else {
-        res.render('/places/edit', {places: places[id]})
-    }
-    */
-    //res.send('GET edit form stub')
     db.Place.findById(req.params.id)
     .then(place => {
-        res.render('places/edit', { place });
+        res.render('places/edit', { place })
     })
     .catch(err => {
-        console.log(err);
-        res.render('error404');
-    });
+        res.render('error404')
+    })
 })
+
 
 router.post('/', (req, res) => {
     //res.send('POST /places stub')
@@ -102,39 +90,16 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-    /*
-    let id = Number(req.params.id)
-    if(isNaN(id)) {
-        res.render('error404')
-    }
-    else if(!places[id]) {
-        res.render('error404')
-    }
-    else {
-        if (!req.body.pic) {
-            // Default image if one is not provided
-            req.body.pic = 'http://placekitten.com/400/400'
-        }
-        if (!req.body.city) {
-            req.body.city = 'Anytown'
-        }
-        if (!req.body.state) {
-            req.body.state = 'USA'
-        }
-
-        res.redirect(`/places/${id}`)
-    }
-    */
-    //res.send('PUT /places/:id stub')
     db.Place.findByIdAndUpdate(req.params.id, req.body)
     .then(() => {
-        res.redirect(`/places/${req.params.id}`);
+        res.redirect(`/places/${req.params.id}`)
     })
     .catch(err => {
-        console.log(err);
-        res.render('error404');
-    });
+        console.log('err', err)
+        res.render('error404')
+    })
 })
+
 
 router.get('/:id/comment', (req, res) => {
     res.render('places/newcomment')
