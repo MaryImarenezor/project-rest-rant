@@ -48,7 +48,7 @@ function show(data) {
             <main>
                 <div className='row'>
                     <div className="col-sm-6">
-                        <img src={data.place.pic} alt={data.place.name} />
+                        <img id='detailed-pic' src={data.place.pic} alt={data.place.name} />
                         <h3>
                         Located in {data.place.city}, {data.place.state}
                         </h3>
@@ -69,16 +69,15 @@ function show(data) {
                             Serving {data.place.cuisines}
                         </h4>
 
-                        <a href="" className="btn btn-warning">Edit</a>
-                        <form method='POST' action={`/places/${data.id}?_method=DELETE`}>
-                            <button href={`/places/${data.id}/edit`} className='btn btn-danger' type='submit'>Delete</button>
+                        <a href={`/places/${data.place.id}/edit`} className="btn btn-warning">Edit</a>
+                        <form method='POST' action={`/places/${data.place.id}?_method=DELETE`}>
+                            <button href={`/places/${data.place.id}`} className='btn btn-danger' type='submit'>Delete</button>
                         </form> 
 
                     </div>
 
                     <h2>Comments</h2>
                     {comments}
-
 
                 </div>
             </main>

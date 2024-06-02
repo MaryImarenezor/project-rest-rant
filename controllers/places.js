@@ -2,11 +2,8 @@ const router = require('express').Router()
 //const places = require('../models/places')
 const db = require('../models')
 
-
+//ROUTE TO: READ the /places index
 router.get('/', (req, res) => {
-    //res.render('places/index', { places })
-    //res.send('GET /places stub')
-    
     db.Place.find()
     .then((places) => {
         res.render('places/index', { places })
@@ -18,10 +15,12 @@ router.get('/', (req, res) => {
     
 })
 
+//ROUTE TO: READ the "Add a Place" form
 router.get('/new', (req, res) => {
     res.render('places/new')
 })
 
+//ROUTE TO: READ the "Place in detail" page
 router.get('/:id', (req, res) => {
     db.Place.findById(req.params.id)
     .populate('comments')
@@ -35,19 +34,23 @@ router.get('/:id', (req, res) => {
     })
 })
 
-
+//ROUTE TO: DELETE a place
 router.delete('/:id', (req, res) => {
     db.Place.findByIdAndDelete(req.params.id)
-    .then(place => {
-        res.redirect('/places')
-    })
-    .catch(err => {
-        console.log('err', err)
-        res.render('error404')
-    })
-})
+        .then(place => {
+            if (!place) {
+                return res.status(404).render('error404'); // Handle non-existent ID
+            }
+            res.redirect('/places'); // Redirect after successful deletion
+        })
+        .catch(err => {
+            console.log('err', err);
+            res.status(500).render('error404'); // Internal Server Error
+        });
+});
 
 
+//ROUTE TO: ACCESS the "Edit a Place" form
 router.get('/:id/edit', (req, res) => {
     db.Place.findById(req.params.id)
     .then(place => {
@@ -58,25 +61,9 @@ router.get('/:id/edit', (req, res) => {
     })
 })
 
-
+//ROUTE TO: CREATE a new Place
+//NOT FUNCITONAL ;(
 router.post('/', (req, res) => {
-    //res.send('POST /places stub')
-    /*
-    console.log(req.body)
-    if (!req.body.pic) {
-      // Default image if one is not provided
-        req.body.pic = 'http://placekitten.com/400/400'
-    }
-    if (!req.body.city) {
-        req.body.city = 'Anytown'
-    }
-    if (!req.body.state) {
-        req.body.state = 'USA'
-    }
-
-    places.push(req.body)
-    res.redirect('/places')
-    */
     console.log(req.body)
 
     db.Place.create(req.body)
@@ -89,6 +76,8 @@ router.post('/', (req, res) => {
     })
 })
 
+//ROUTE TO: UPDATE a Place
+//IT'S FUNCTIONAL AS IT'S PERFORMING THE ".then()" AND NOT THE ".catch()", BUT THERE'S NO UPDATE IN THE DATABASE( >:[ )
 router.put('/:id', (req, res) => {
     db.Place.findByIdAndUpdate(req.params.id, req.body)
     .then(() => {
@@ -100,10 +89,13 @@ router.put('/:id', (req, res) => {
     })
 })
 
-
+//ROUTE TO: ACCESS the "New Comment" form
+//NOT FUNCITONAL ;(
 router.get('/:id/comment', (req, res) => {
     res.render('places/newcomment')
 })
+
+//ROUTE TO: CREATES a new comment
 router.post('/:id/comment', (req, res) => {
     console.log(req.body)
     db.Place.findById(req.params.id)
@@ -117,10 +109,12 @@ router.post('/:id/comment', (req, res) => {
             })
         })
         .catch(err => {
+            console.log('err', err)
             res.render('error404')
         })
     })
     .catch(err => {
+        console.log('err', err)
         res.render('error404')
     })
 })
