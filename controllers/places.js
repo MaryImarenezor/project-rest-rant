@@ -62,7 +62,6 @@ router.get('/:id/edit', (req, res) => {
 })
 
 //ROUTE TO: CREATE a new Place
-//NOT FUNCITONAL ;(
 router.post('/', (req, res) => {
     console.log(req.body)
 
