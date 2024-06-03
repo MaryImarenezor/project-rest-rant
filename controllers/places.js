@@ -77,17 +77,26 @@ router.post('/', (req, res) => {
 })
 
 //ROUTE TO: UPDATE a Place
-//IT'S FUNCTIONAL AS IT'S PERFORMING THE ".then()" AND NOT THE ".catch()", BUT THERE'S NO UPDATE IN THE DATABASE( >:[ )
 router.put('/:id', (req, res) => {
-    db.Place.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => {
-        res.redirect(`/places/${req.params.id}`)
+    db.Place.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+    )
+    .then(place => {
+        if (!place) {
+            return res.status(404).render('error404'); // Handle non-existent ID
+        }
+        res.redirect(`/places/${req.params.id}`); // Redirect after successful update
     })
     .catch(err => {
-        console.log('err', err)
-        res.render('error404')
-    })
-})
+        console.log('err', err);
+        res.status(500).render('error404'); // Internal Server Error
+    });
+});
+
+
+
 
 //ROUTE TO: ACCESS the "New Comment" form
 //NOT FUNCITONAL ;(
@@ -96,6 +105,7 @@ router.get('/:id/comment', (req, res) => {
 })
 
 //ROUTE TO: CREATES a new comment
+//NOT FUNCTIONAL (maybe? I haven't tested it yet...)
 router.post('/:id/comment', (req, res) => {
     console.log(req.body)
     db.Place.findById(req.params.id)
