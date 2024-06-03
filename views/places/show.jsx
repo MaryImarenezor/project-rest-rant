@@ -1,5 +1,6 @@
 const React = require('react')
 const Def = require("../default")
+const comment_form = require('./newcomment')
 
 function show(data) {
     let comments = (
@@ -77,8 +78,8 @@ function show(data) {
                     </div>
 
                     <h2>Comments</h2>
+                    <a href={`/places/${data.place.id}/comment`} className="outline-dark">Add a Comment!</a>
                     {comments}
-
                 </div>
             </main>
         </Def>

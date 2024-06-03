@@ -98,13 +98,14 @@ router.put('/:id', (req, res) => {
 
 
 //ROUTE TO: ACCESS the "New Comment" form
-//NOT FUNCITONAL ;(
 router.get('/:id/comment', (req, res) => {
-    res.render('places/newcomment')
+    res.render('places/newcomment', { placeId: req.params.id})
 })
 
 //ROUTE TO: CREATES a new comment
 //NOT FUNCTIONAL (maybe? I haven't tested it yet...)
+
+/*
 router.post('/:id/comment', (req, res) => {
     console.log(req.body)
     db.Place.findById(req.params.id)
@@ -127,6 +128,38 @@ router.post('/:id/comment', (req, res) => {
         res.render('error404')
     })
 })
+*/
+router.post('/:id/comment', (req, res) => {
+    const { author, content, stars, rant } = req.body;
+
+    // Convert rant to Boolean
+    const rantBoolean = rant === 'on';
+
+    // Create new comment object
+    const newComment = {
+        author,
+        content,
+        stars,
+        rant: rantBoolean
+    };
+
+    db.Place.findById(req.params.id)
+        .then(place => {
+            if (!place) {
+                return res.status(404).render('error404');
+            }
+            place.comments.push(newComment);
+            return place.save();
+        })
+        .then(() => {
+            res.redirect(`/places/${req.params.id}`);
+        })
+        .catch(err => {
+            console.log('Error during comment submission:', err);
+            res.status(500).render('error404');
+        });
+});
+
 
 
 
